@@ -18,11 +18,6 @@ net session >nul 2>&1
 	exit
  )
 
-::echo 'Type 1 to activate the hidden account, or 2 to deactivate it.'
-::choice /c 12 /m "Type 1 to activate the hidden administrator account, or 2 to deactivate it."
-
-::if ERRORLEVEL == 2 goto caseTwo :: If '2' was typed ::
-
 :: If '2' was typed ::
 if ERRORLEVEL == 2 (
 	goto :caseTwo
@@ -50,8 +45,6 @@ goto END
 
 :END
 exit
-
-::echo Press any key to exit! 
 
 
 
