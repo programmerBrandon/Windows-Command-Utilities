@@ -14,14 +14,14 @@ net session >nul 2>&1
  if [%errorLevel%] == [0] (
  	choice /c 12 /m "Type 1 to activate the hidden administrator account, or 2 to deactivate it."
  ) else (
- 	echo Error: This script requires admin priviledges. Please rerun the script as administrator.
+ 	echo Error: This script requires admin privileges. Please rerun the script as administrator.
 	pause
 	exit
  )
 
 :: If '2' was typed (disable hidden admin account) ::
 if ERRORLEVEL == 2 (
-	goto :caseTwo
+	goto caseTwo
 )
 
 :: If '1' was typed (enable hidden admin account) ::
