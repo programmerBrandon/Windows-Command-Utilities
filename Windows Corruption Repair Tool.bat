@@ -3,19 +3,32 @@
 :: Script Name: Windows Corruption Scanner And Repair Tool ::
 :: Author: Brandon Green ::
 :: Date Created: 7/9/2023 ::
-:: Date Last Modified: 7/9/2023 ::
-:: Version: 1.0 ::
+:: Date Last Modified: 8/28/2023 ::
+:: Modification Reason: Added check to ensure script is run as admin ::
+:: Version: 1.1 ::
 
 ::This script uses sfc/ scannow command to check for corruption, when this is finished user is
 ::prompted to type 'Y' or 'N' as to whether corruption was found, if Y, runs DISM to fix issues. ::
 
-echo Windows Corruption Scanner And Repair Tool - Version 1.0
+echo Windows Corruption Scanner And Repair Tool - Version 1.1
 echo.
-echo Running 'sfc /scannow' to check for corruption.
 
-:: SFC SCAN COMMAND ::
-sfc /scannow
+:: Check that script is run as Administrator ::
+net session >nul 2>&1
+ if [%errorLevel%] == [0] (
+ 	echo Running 'sfc /scannow' to check for corruption.
 
+	:: SFC SCAN COMMAND ::
+	sfc /scannow
+	goto userPrompt
+
+ ) else (
+ 	echo Error: This script requires admin privileges. Please rerun the script as administrator.
+	pause
+	exit
+ )
+
+:userPrompt
 ::Prompts the user to Y or N, if issues were found they should type Y, otherwise type N.
 ::If user types Y, caseOne commands will be run. Otherwise caseTwo will be run.
 choice /c YN /m "Were integrity issues found?"
@@ -23,6 +36,8 @@ choice /c YN /m "Were integrity issues found?"
 if ERRORLEVEL 2 goto caseTwo :: If 'N' was typed ::
 
 if ERRORLEVEL 1 goto caseOne :: If 'Y' was typed ::
+
+:: END OF userPrompt ::
 
 :: CASE ONE NOTES ::
 :: If issues were found, runs Deployment Image Servicing and Management tool (DISM) to fix them. ::
